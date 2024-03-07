@@ -4,7 +4,7 @@ import yt_dlp
 
 def main():
     if len(sys.argv) < 2:
-        print(f'Usage: {sys.argv[0]} URL')
+        print(f'Usage: {sys.argv[0]} [URL] [format id] [output filename]')
         return
     
     # ℹ️ See help(yt_dlp.YoutubeDL) for a list of available options and public functions
