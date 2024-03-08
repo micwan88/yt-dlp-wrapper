@@ -40,9 +40,6 @@ RUN apk add --no-cache git
 # init directories it if not exist
 RUN mkdir -p ${APP_DIR}
 
-# init directories it if not exist
-RUN mkdir -p ${MEDIA_DIR}
-
 # change working directory
 WORKDIR ${TOOLS_DIR}
 
@@ -63,8 +60,6 @@ RUN apk add --no-cache tzdata git
 # copying app files from last build
 COPY --from=appbuild --chown=${APP_USER}:${APP_USER_GROUP} --chmod=750 ${APP_DIR} ${APP_DIR}
 
-COPY --from=appbuild --chown=${APP_USER}:${APP_USER_GROUP} --chmod=750 ${MEDIA_DIR} ${MEDIA_DIR}
-
 # switch to app user
 USER ${APP_USER}:${APP_USER_GROUP}
 
@@ -75,4 +70,4 @@ WORKDIR ${APP_DIR}
 RUN pip install -r requirements.txt
 
 # define image entrypoint
-CMD ["./run.sh"]
+ENTRYPOINT ["./run.sh"]
