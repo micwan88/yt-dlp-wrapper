@@ -7,7 +7,7 @@ def main():
         print(f'Usage: {sys.argv[0]} [URL] [format id] [output filename]')
         return
     
-    # ℹ️ See help(yt_dlp.YoutubeDL) for a list of available options and public functions
+    # See help(yt_dlp.YoutubeDL) for a list of available options and public functions
     ydl_opts_dict: Dict[str, str] = {}
     target_url = sys.argv[1]
 
