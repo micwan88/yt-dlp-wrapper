@@ -54,8 +54,8 @@ FROM basebuild AS finalbuild
 # declare app folder is an external volume
 VOLUME ${APP_DIR}
 
-# install timezonedata, git
-RUN apk add --no-cache tzdata git
+# install timezonedata, git, ffmpeg (use for mixing audio)
+RUN apk add --no-cache tzdata git ffmpeg
 
 # copying app files from last build
 COPY --from=appbuild --chown=${APP_USER}:${APP_USER_GROUP} --chmod=750 ${APP_DIR} ${APP_DIR}
@@ -65,6 +65,9 @@ USER ${APP_USER}:${APP_USER_GROUP}
 
 # change working directory
 WORKDIR ${APP_DIR}
+
+# upgrade pip
+RUN pip install --upgrade pip
 
 # install python packages
 RUN pip install -r requirements.txt
