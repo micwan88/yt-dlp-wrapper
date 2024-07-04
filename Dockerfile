@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.authors="Michael Wan"
 #Note for directories
 #/opt
 #/opt/ytdlp
-#/media
+#/media/ytdlp
 
 # define app directory
 ARG APP_DIR
@@ -18,7 +18,7 @@ ENV TOOLS_DIR=${TOOLS_DIR:-/opt}
 
 # define media output directory
 ARG MEDIA_DIR
-ENV MEDIA_DIR=${MEDIA_DIR:-/media}
+ENV MEDIA_DIR=${MEDIA_DIR:-/media/ytdlp}
 
 # define timezone
 #ENV TZ=Asia/Hong_Kong
