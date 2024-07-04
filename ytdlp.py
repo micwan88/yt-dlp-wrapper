@@ -1,4 +1,5 @@
 import sys
+import os
 from typing import Dict
 import yt_dlp
 
@@ -55,8 +56,14 @@ def main():
     ydl_opts_dict: Dict[str, str] = {}
     target_url = sys.argv[1]
     target_format_id = None
+    output_folder = os.environ['MEDIA_DIR']
+    # ytdlp default format
+    output_file_fullpath = '%(title)s [%(id)s].%(ext)s'
+    if output_folder:
+        output_file_fullpath = output_folder + '/' + output_file_fullpath
 
     print(f'URL: {target_url}')
+    print(f'Output folder: {output_folder}')
 
     if len(sys.argv) >= 3:
         target_format_id = sys.argv[2]
@@ -64,8 +71,12 @@ def main():
     print(f'Target format id: {target_format_id}')
     
     if len(sys.argv) >= 4:
-        ydl_opts_dict['outtmpl'] = sys.argv[3]
-        print(f'Output filename: {sys.argv[3]}')
+        output_file_fullpath = sys.argv[3]
+        if output_folder:
+            output_file_fullpath = output_folder + '/' + output_file_fullpath
+        print(f'Output filename: {output_file_fullpath}')
+
+    ydl_opts_dict['outtmpl'] = output_file_fullpath
 
     with yt_dlp.YoutubeDL(ydl_opts_dict) as ydl:
         if target_format_id:

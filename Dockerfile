@@ -6,6 +6,7 @@ LABEL org.opencontainers.image.authors="Michael Wan"
 #Note for directories
 #/opt
 #/opt/ytdlp
+#/media
 
 # define app directory
 ARG APP_DIR
@@ -52,7 +53,10 @@ RUN git clone https://github.com/micwan88/yt-dlp-wrapper.git ytdlp
 FROM basebuild AS finalbuild
 
 # declare app folder is an external volume
-VOLUME ${APP_DIR}
+VOLUME ${MEDIA_DIR}
+
+# init directories it if not exist
+RUN mkdir -p ${MEDIA_DIR}
 
 # install timezonedata, git, ffmpeg (use for mixing audio)
 RUN apk add --no-cache tzdata git ffmpeg
