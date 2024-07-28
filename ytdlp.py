@@ -49,13 +49,24 @@ class FormatMixer:
 
 def main():
     if len(sys.argv) < 2:
-        print(f'Usage: {sys.argv[0]} [URL] [output filename]')
+        print(f'Usage: {sys.argv[0]} [URL] [DRM] [format id] [output filename]')
         return
     
+    '''
+    #URL
+    #URL format_id
+    #URL format_id output_filename
+    #URL DRM
+    #URL DRM format_id
+    #URL DRM format_id output_filename
+    '''
+    
+    current_arg_index = 1
     # See help(yt_dlp.YoutubeDL) for a list of available options and public functions
     ydl_opts_dict: Dict[str, str] = {}
-    target_url = sys.argv[1]
+    target_url = sys.argv[current_arg_index]
     target_format_id = None
+    allow_unplay_format = False
     output_folder = os.environ['MEDIA_DIR']
     # ytdlp default format
     output_file_fullpath = '%(title)s [%(id)s].%(ext)s'
@@ -65,18 +76,41 @@ def main():
     print(f'URL: {target_url}')
     print(f'Output folder: {output_folder}')
 
-    if len(sys.argv) >= 3:
-        target_format_id = sys.argv[2]
+    #2
+    current_arg_index += 1
+    if len(sys.argv) >= current_arg_index + 1:
+        if sys.argv[current_arg_index] in [ 'DRM', 'drm']:
+            allow_unplay_format = True
+        else:
+            target_format_id = sys.argv[current_arg_index]
+
+    #3
+    current_arg_index += 1
+    if len(sys.argv) >= current_arg_index + 1:
+        # If no DRM arg, then must be filename
+        if not allow_unplay_format:
+            output_file_fullpath = sys.argv[current_arg_index]
+            if output_folder:
+                output_file_fullpath = output_folder + '/' + output_file_fullpath
+            print(f'Output filename: {output_file_fullpath}')
+        else:
+            #else format_id
+            target_format_id = sys.argv[current_arg_index]
 
     print(f'Target format id: {target_format_id}')
     
-    if len(sys.argv) >= 4:
-        output_file_fullpath = sys.argv[3]
+    #4
+    current_arg_index += 1
+    if len(sys.argv) >= current_arg_index + 1:
+        output_file_fullpath = sys.argv[current_arg_index]
         if output_folder:
             output_file_fullpath = output_folder + '/' + output_file_fullpath
         print(f'Output filename: {output_file_fullpath}')
 
     ydl_opts_dict['outtmpl'] = output_file_fullpath
+
+    if allow_unplay_format:
+        ydl_opts_dict['allow_unplayable_formats'] = True
 
     with yt_dlp.YoutubeDL(ydl_opts_dict) as ydl:
         if target_format_id:

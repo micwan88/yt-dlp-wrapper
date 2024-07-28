@@ -56,7 +56,7 @@ FROM basebuild AS finalbuild
 VOLUME ${MEDIA_DIR}
 
 # install timezonedata, git, ffmpeg (use for mixing audio)
-RUN apk add --no-cache tzdata git ffmpeg
+RUN apk add --no-cache tzdata git ffmpeg bento4
 
 # copying app files from last build
 COPY --from=appbuild --chown=${APP_USER}:${APP_USER_GROUP} --chmod=750 ${APP_DIR} ${APP_DIR}
