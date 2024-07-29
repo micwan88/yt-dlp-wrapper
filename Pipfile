@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 yt-dlp = "*"
+requests = "*"
 
 [dev-packages]
 
