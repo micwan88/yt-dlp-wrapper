@@ -185,6 +185,8 @@ def main():
 
             # if target content is DRM protected, try get the key from online service after download
             if allow_unplay_format and target_url.strip().endswith('mpd'):
+                print('DRM content require decryption')
+                
                 drm_key = get_drm_key(target_url, license_server_url)
 
                 if drm_key:
@@ -197,4 +199,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
